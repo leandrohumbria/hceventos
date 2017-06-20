@@ -12,9 +12,8 @@ module.exports = {
     client.query('SELECT * FROM evento ORDER BY nombre', function(err, result) {
       if(err) {
         return console.error('error running query');
-      }
-      res.render('index', {evento: result.rows});
-      done();
+      }  
+      return res.send(result.rows);
     });
   });
 },
@@ -27,9 +26,8 @@ module.exports = {
     }
     client.query("INSERT INTO evento (nombre, descripcion, objetivo) VALUES ($1, $2, $3)",
       [req.body.nombre, req.body.descripcion, req.body.objetivo]);
- 
-      done();
-      res.redirect('/app/event');
+
+     return res.sendStatus(200);
   });
 },
 
@@ -41,10 +39,9 @@ module.exports = {
       return console.error('error fetching client from pool', err);
     }
     client.query("UPDATE evento SET nombre= $1, descripcion = $2, objetivo = $3 WHERE id = $4",
-      [req.body.nombre, req.body.descripcion, req.body.objetivo, req.body.id]);
+      [req.body.nombre, req.body.descripcion, req.body.objetivo, req.params.id]);
  
-      done();
-      res.redirect('/app/event');                                                
+    return res.sendStatus(200);                                               
   });
 },
 
@@ -57,8 +54,7 @@ EliminarEvento: function(req, res) {
     client.query("DELETE FROM evento WHERE id = $1",
       [req.params.id]);
  
-      done();
-      res.sendStatus(200);
+      return res.sendStatus(200);
   });
 }
 }
