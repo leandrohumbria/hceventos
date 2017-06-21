@@ -31,6 +31,7 @@ router.get('/app/user/' , controllers.userController.BuscarUsuarios);
 
 //router.get('/app/event/:id' , controllers.eventController.BuscarEventoPorId);
 
+
 router.post('/app/user/regist/' , controllers.userController.RegistrarUsuario);
 
 router.post('/app/user/modify/:id' , controllers.userController.ModificarUsuario);

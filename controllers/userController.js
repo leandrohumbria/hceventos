@@ -20,17 +20,54 @@ module.exports = {
 
 
   RegistrarUsuario: function(req, res) {
-  pg.connect(connect, function(err, client, done) {
-    if(err) {
-      return console.error('error fetching client from pool', err);
-    }
-    client.query("INSERT INTO usuario (nombre, email, password) VALUES ($1, $2, $3)",
-      [req.body.nombre, req.body.email, req.body.password]);
-      
-      return res.sendStatus(200);
-      //return res.Status(200).send({message:"Registro Exitoso"});
-  });
-},
+    pg.connect(connect, function(err, client, done) {
+      if(err) {
+        return console.error('Problemas de conexion con la Base de Datos', err)
+      }
+
+      else {        
+      client.query('SELECT email FROM usuario WHERE email=$1', [req.body.email], function(err, result) {
+        //console.log(result.rows.length)
+        if(err){
+        return console.error('Problemas para realizar la Consulta', err)
+        }
+
+
+        else {
+          if(result.rows.length > 0) {
+          return console.error('Ese correo Electronico ya fue utilizado')     
+          }
+
+          else {
+            client.query('SELECT usuario FROM usuario WHERE usuario=$1', [req.body.usuario], function(err, result) {
+
+              if(err){
+              return console.error('Problemas para realizar la Consulta', err)
+              }
+              else {
+                if (result.rows.length > 0) {
+                  return console.error('Ese nombre de usuario ya fue utilizado')     
+                  }
+                  else {
+                    if(req.body.password != req.body.password2){
+                      return console.error('Las contraseñas ingresadas no coinciden')
+                      }               
+                      else {
+                        client.query("INSERT INTO usuario (nombre, email, password, usuario) VALUES ($1, $2, $3, $4)",
+                        [req.body.nombre, req.body.email, req.body.password, req.body.usuario]);
+                            return console.log('El usuario fue Registrado Exitosamente')
+                            }
+                        }
+                        return res.sendStatus(200)
+                    }
+                    
+                })
+                }
+              }
+            })
+            }
+      })
+  },
 
   
   ModificarUsuario: function(req, res) {
@@ -38,8 +75,9 @@ module.exports = {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query("UPDATE usuario SET nombre= $1, email = $2, password = $3 WHERE id = $4",
-      [req.body.nombre, req.body.email, req.body.password, req.params.id]);
+    client.query('UPDATE usuario SET nombre= $1, apellido=$2, email=$3, email_lab=$4, cedula=$5, password=$6, tel_mov=$7, tel_hab=$8, fech_nac=$9, genero=$10, dir_hab=$11, lug_trab=$12, tip_rol=$13 WHERE id = $14', 
+      [req.body.nombre, req.body.apellido, req.body.email, req.body.email_lab, req.body.cedula, req.body.password, req.body.tel_mov, req.body.tel_hab, req.body.fech_nac, req.body.genero,
+      req.body.dir_hab, req.body.lug_trab, req.body.tip_rol, req.params.id]);
  
       return res.sendStatus(200);
   });
@@ -58,4 +96,3 @@ EliminarUsuario: function(req, res) {
   });
 }
 }
-
