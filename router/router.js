@@ -21,7 +21,7 @@ router.post('/app/event/regist/' , controllers.eventController.CrearEvento);
 
 router.post('/app/event/modify/:id' , controllers.eventController.ModificarEventoPorId);
 
-router.delete('/eliminate/:id' , controllers.eventController.EliminarEvento);
+router.put('/app/event/eliminate/:id' , controllers.eventController.EliminarEvento);
 
 
 
@@ -36,7 +36,7 @@ router.post('/app/user/regist/' , controllers.userController.RegistrarUsuario);
 
 router.post('/app/user/modify/:id' , controllers.userController.ModificarUsuario);
 
-router.delete('/app/eliminate/:id' , controllers.userController.EliminarUsuario);
+router.put('/app/user/eliminate/:id' , controllers.userController.EliminarUsuario);
 
 
 

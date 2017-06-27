@@ -7,30 +7,29 @@ module.exports = {
   BuscarEventos: function(req, res) {
   pg.connect(connect, function(err, client, done) {
     if(err) {
-      return console.error('error fetching client from pool', err);
+      return console.error('Problemas de conexion con la Base de Datos', err);
     }
     client.query('SELECT * FROM evento ORDER BY nombre', function(err, result) {
       if(err) {
-        return console.error('error running query');
+        return console.error('Problemas para realizar la Consulta', err);
       }  
-      return res.send(result.rows);
-    });
-  });
+      return res.send(result.rows) + res.sendStatus(200)
+    })
+  })
 },
 
 
   CrearEvento: function(req, res) {
   pg.connect(connect, function(err, client, done) {
     if(err) {
-      return console.error('error fetching client from pool', err);
+      return console.error('Problemas de conexion con la Base de Datos', err);
     }
-    client.query("INSERT INTO evento (nombre, descripcion, objetivo) VALUES ($1, $2, $3)",
+    client.query('INSERT INTO evento (nombre, descripcion, objetivo, eliminado) VALUES ($1, $2, $3, FALSE)',
       [req.body.nombre, req.body.descripcion, req.body.objetivo]);
 
-     return res.sendStatus(200);
-  });
+     return console.log ('El evento fue creado satisfactoriamente') + res.sendStatus(200);
+  })
 },
-
 
   
   ModificarEventoPorId: function(req, res) {
@@ -42,20 +41,25 @@ module.exports = {
       [req.body.nombre, req.body.descripcion, req.body.objetivo, req.params.id]);
  
     return res.sendStatus(200);                                               
-  });
+  })
 },
 
 
 EliminarEvento: function(req, res) {
   pg.connect(connect, function(err, client, done) {
     if(err) {
-      return console.error('error fetching client from pool', err);
+      return console.error('Problemas de conexion con la Base de Datos', err)
     }
-    client.query("DELETE FROM evento WHERE id = $1",
-      [req.params.id]);
- 
-      return res.sendStatus(200);
-  });
+    client.query("UPDATE evento SET eliminado=TRUE WHERE id = $1",
+      [req.params.id], function(err, result) {
+      if(err){
+        return console.log('No se pudo eliminar el evento', err)      
+      }
+      else{
+        return console.log('El evento fue eliminado satisfactoriamente') + res.sendStatus(200)
+      }
+    })
+  })
 }
 }
 
