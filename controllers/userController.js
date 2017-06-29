@@ -52,8 +52,8 @@ module.exports = {
                       return console.error('Las contraseñas ingresadas no coinciden')
                       }               
                       else {
-                        client.query('INSERT INTO usuario (nombre, email, password, usuario, eliminado) VALUES ($1, $2, $3, $4, FALSE)',
-                        [req.body.nombre, req.body.email, req.body.password, req.body.usuario], function(err, result){
+                        client.query('INSERT INTO usuario (nombre, apellido, email, password, fecha_registro, hora_registro) VALUES ($1, $2, $3, $4, current_date, current_time)',
+                        [req.body.nombre, req.body.apellido, req.body.email, req.body.password], function(err, result){
                           if (err) {
                             return console.log('No se pudo realizar la insercion de datos', err)
                           }
@@ -98,9 +98,8 @@ EliminarUsuario: function(req, res) {
           return console.log('No se pudo eliminar el usuario', err)           
         }
         else{
-
-        }
           return console.log('El usuario fue eliminado satisfactoriamente') + res.sendStatus(200)        
+        }
       })
   })
 }

@@ -10,34 +10,32 @@ router.all('/*', function(req, res, next) {
   next();
 });
 
+
+
 // RUTAS DE ACCESO PARA MODIFICACION DE EVENTOS
 
+router.post('/app/event/create/' , controllers.eventController.CrearEvento);
 
 router.get('/app/event/' , controllers.eventController.BuscarEventos);
 
-//router.get('/app/event/:id' , controllers.eventController.BuscarEventoPorId);
-
-router.post('/app/event/regist/' , controllers.eventController.CrearEvento);
+router.get('/app/event/:id', controllers.eventController.BuscarEventosporId);
 
 router.post('/app/event/modify/:id' , controllers.eventController.ModificarEventoPorId);
 
 router.put('/app/event/eliminate/:id' , controllers.eventController.EliminarEvento);
 
+router.post('/app/event/registuser/:id' , controllers.eventController.RegistrarenEvento);
 
 
 // RUTAS DE ACCESO PARA MODIFICACION DE USUARIOS
 
 router.get('/app/user/' , controllers.userController.BuscarUsuarios);
 
-//router.get('/app/event/:id' , controllers.eventController.BuscarEventoPorId);
-
-
 router.post('/app/user/regist/' , controllers.userController.RegistrarUsuario);
 
 router.post('/app/user/modify/:id' , controllers.userController.ModificarUsuario);
 
 router.put('/app/user/eliminate/:id' , controllers.userController.EliminarUsuario);
-
 
 
 
