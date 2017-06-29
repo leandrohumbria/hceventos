@@ -1,19 +1,23 @@
 var pg = require('pg');
-
 var connect = "postgres://admhc:shc211521159796220@10.121.6.4:5432/hceventos";
 
-
-module.exports = {
-  
+module.exports = {  
   CrearEvento: function(req, res) {
     pg.connect(connect, function(err, client, done) {
       if(err) {
-        return console.error('Problemas de conexion con la Base de Datos', err);
+        console.log('Problemas de conexion con la Base de Datos', err)
+        return res.sendStatus(500)
       }
-      client.query('INSERT INTO evento (nombre, detalle, fecha_creacion) VALUES ($1, $2, current_date)',
-        [req.body.nombre, req.body.detalle]);
-
-       return console.log ('El evento fue creado satisfactoriamente') + res.sendStatus(200);
+      client.query('INSERT INTO evento (nombre, detalle, fecha_creacion) VALUES ($1, $2, current_date)', [req.body.nombre, req.body.detalle], function(err, result){
+        if(err) {
+          console.log('Problemas para realizar la Consulta', err)
+          return res.sendStatus(500)
+        }
+        else{
+          console.log('El evento fue creado satisfactoriamente')
+          return  res.status(200)
+       }
+      })  
     })
   },
 
