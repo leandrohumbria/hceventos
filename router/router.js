@@ -14,28 +14,38 @@ router.all('/*', function(req, res, next) {
 
 // RUTAS DE ACCESO PARA MODIFICACION DE EVENTOS
 
-router.post('/app/event/create/' , controllers.eventController.CrearEvento);
+router.post('/app/event/create/' , controllers.eventController.CrearEvento)
 
-router.get('/app/event/' , controllers.eventController.BuscarEventos);
+router.get('/app/event/' , controllers.eventController.BuscarEventos)
 
-router.get('/app/event/:id', controllers.eventController.BuscarEventosporId);
+router.get('/app/event/:id', controllers.eventController.BuscarEventosporId)
 
-router.post('/app/event/modify/:id' , controllers.eventController.ModificarEventoPorId);
+router.put('/app/event/modify/:id' , controllers.eventController.ModificarEvento)
 
-router.put('/app/event/eliminate/:id' , controllers.eventController.EliminarEvento);
+router.put('/app/event/delete/:id' , controllers.eventController.EliminarEvento)
 
-router.post('/app/event/registuser/:id' , controllers.eventController.RegistrarenEvento);
+
+
+router.post('/app/inscription/event' , controllers.inscriptionEventController.RegistrarenEvento)
+
+router.get('/app/inscription/event' , controllers.inscriptionEventController.BuscarInscripciones)
+
+router.get('/app/inscription/user/:id' , controllers.inscriptionEventController.BuscarInscripcionesporUsuario)
+
+router.delete('/app/event/inscription/delete/:id' , controllers.inscriptionEventController.EliminarInscripcion)
 
 
 // RUTAS DE ACCESO PARA MODIFICACION DE USUARIOS
 
-router.get('/app/user/' , controllers.userController.BuscarUsuarios);
+router.post('/app/user/register/' , controllers.userController.RegistrarUsuario)
 
-router.post('/app/user/regist/' , controllers.userController.RegistrarUsuario);
+router.get('/app/user/' , controllers.userController.BuscarUsuarios)
 
-router.post('/app/user/modify/:id' , controllers.userController.ModificarUsuario);
+router.get('/app/user/:id' , controllers.userController.BuscarUsuarioporId)
 
-router.put('/app/user/eliminate/:id' , controllers.userController.EliminarUsuario);
+router.put('/app/user/modify/:id' , controllers.userController.ModificarUsuario)
+
+router.put('/app/user/delete/:id' , controllers.userController.EliminarUsuario)
 
 
 
